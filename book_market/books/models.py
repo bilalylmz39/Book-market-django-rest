@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
-
+# Models
 class Book(models.Model):
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=100)
