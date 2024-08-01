@@ -4,21 +4,26 @@ from books.models import Book, Comment
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
+from rest_framework import permissions
+from books.api.permissions import IsAdminUserOrReadOnly
 
 #concrete view
 class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer    
+    serializer_class = BookSerializer
+    permission_classes = [IsAdminUserOrReadOnly]    
 
 
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
     def perform_create(self, serializer):
         book_id = self.kwargs.get('book_id')
@@ -29,6 +34,7 @@ class CommentCreateAPIView(generics.CreateAPIView):
 class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 
