@@ -11,8 +11,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Book
         fields = '__all__'
-
-        

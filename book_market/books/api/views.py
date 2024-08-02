@@ -36,15 +36,14 @@ class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-
-# class BookListCreateAPIView(ListModelMixin, CreateModelMixin ,GenericAPIView):
+# class BookListCreateAPIView(ListModelMixin, CreateModelMixin,GenericAPIView):
 #     serializer_class = BookSerializer
 #     queryset = Book.objects.all()
 
-#     #listelemek
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
+#    listelemek
+#    def get(self, request, *args, **kwargs):
+#        return self.list(request, *args, **kwargs)
 
-#     #Oluşturabilmek
-#     def post(self, request, *args, **kwargs):
+#    Oluşturabilmek
+#    def post(self, request, *args, **kwargs):
 #         return self.create(request, *args, **kwargs)
