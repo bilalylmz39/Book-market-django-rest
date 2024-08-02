@@ -1,9 +1,11 @@
+from django.forms import ValidationError
 from books.api.serializers import BookSerializer, CommentSerializer
 from books.models import Book, Comment
 
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
-from books.api.permissions import IsAdminUserOrReadOnly
+from books.api.permissions import (IsAdminUserOrReadOnly,
+                                   IsCommentOwnerOrReadOnly)
 
 
 # concrete view
@@ -27,13 +29,17 @@ class CommentCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         book_id = self.kwargs.get('book_id')
         book = get_object_or_404(Book, pk=book_id)
-        serializer.save(book=book)
+        user = self.request.user
+        comments = Comment.objects.filter(book=book, comment_owner=user)
+        if comments.exists():
+            raise ValidationError('You have already commented on this book')
+        serializer.save(book=book, comment_owner=user)
 
 
 class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsCommentOwnerOrReadOnly]
 
 
 # class BookListCreateAPIView(ListModelMixin, CreateModelMixin,GenericAPIView):
