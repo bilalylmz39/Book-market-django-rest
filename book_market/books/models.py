@@ -1,21 +1,22 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-# Create your models here.
-# Models
+
 class Book(models.Model):
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True), 
+    description = models.TextField(blank=True, null=True),
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField()
 
     def __str__(self):
         return f'{self.name} - {self.author}'
-    
+
+
 class Comment(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comments')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE,
+                             related_name='comments')
     comment_owner = models.CharField(max_length=100)
     comment = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
@@ -23,6 +24,6 @@ class Comment(models.Model):
     rating = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)],
     )
- 
+
     def __str__(self):
-        return f'self.rating - {self.comment_owner} - {self.comment}'  
+        return f'self.rating - {self.comment_owner} - {self.comment}'
