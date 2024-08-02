@@ -1,13 +1,12 @@
-from rest_framework.generics import GenericAPIView
 from books.api.serializers import BookSerializer, CommentSerializer
 from books.models import Book, Comment
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
+
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
-from rest_framework import permissions
 from books.api.permissions import IsAdminUserOrReadOnly
 
-#concrete view
+
+# concrete view
 class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -45,9 +44,7 @@ class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 #     #listelemek
 #     def get(self, request, *args, **kwargs):
 #         return self.list(request, *args, **kwargs)
-    
+
 #     #Oluşturabilmek
 #     def post(self, request, *args, **kwargs):
 #         return self.create(request, *args, **kwargs)
-
-    
