@@ -6,13 +6,16 @@ from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from books.api.permissions import (IsAdminUserOrReadOnly,
                                    IsCommentOwnerOrReadOnly)
+from books.api.pagination import SmallPagination, LargePagination
 
 
 # concrete view
 class BookListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().order_by('id')
     serializer_class = BookSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+    pagination_class = LargePagination
+    print("BookListCreateAPIView", serializer_class)
 
 
 class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -25,6 +28,7 @@ class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+    pagination_class = SmallPagination
 
     def perform_create(self, serializer):
         book_id = self.kwargs.get('book_id')

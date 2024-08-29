@@ -4,7 +4,6 @@ import requests
 import django
 from django.contrib.auth.models import User
 from faker import Faker
-import datetime
 from books.api.serializers import BookSerializer
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'book_market.settings')
@@ -38,7 +37,6 @@ def set_user():
 
 
 def get_books(topic):
-    fake = Faker("en_US")
     url = 'https://openlibrary.org/search.json'
     payload = {'q': topic}
     response = requests.get(url, params=payload)
@@ -50,22 +48,17 @@ def get_books(topic):
     data = response.json()
     books = data.get('docs', [])
 
-    for book in books[:5]:
+    for book in books[:50]:
         book_name = book.get('title', '')
         text = book.get('text', [])
         if not isinstance(text, list):
             text = [str(text)]
-        date_start = datetime(2015, 1, 1)
-        date_end = datetime(2019, 12, 31).year
 
         data = dict(
             name=book.get('title', 'Unknown'),
             author=book.get('author_name', ['Unknown'])[0],
-            description='-'.join(text),
-            published_date=fake.date_between_dates(
-                date_start=date_start,
-                date_end=date_end,
-            )
+            description='This is a dummy description.',
+            published_date='2023-01-01'
         )
 
         serializer = BookSerializer(data=data)
